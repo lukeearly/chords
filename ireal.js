@@ -130,6 +130,7 @@ exports.parse_tune = function(decoded) {
         title: parts[0],
         composer: parts[1],
         style: parts[3],
+        originalKey: parts[4],
         key: parts[4],
         form: form
     }
@@ -205,10 +206,10 @@ exports.transpose_note = function(from, to, note) {
     return add_interval(to, interval)
 }
 
-exports.tranpose = function(tune, to) {
+exports.transpose = function(tune, to) {
     const from = tune.key.split('-')[0]
     let transposed = JSON.parse(JSON.stringify(tune))
-    transposed.key = to[0] + tune.key.includes("-") ? "-" : ""
+    transposed.key = to.split('-')[0] + (tune.key.includes("-") ? "-" : "")
     transposed.form.measures.forEach(measure => {
         for (let i = 0; i < measure.chords.length; ++i) {
             if (measure.chords[i][0] == "x") continue
